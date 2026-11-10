@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Registrar devolução | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('emprestimos')}"></div>
+<main class="container">
+    <a class="voltar" th:href="@{/emprestimos}">← Voltar aos empréstimos</a>
+    <div class="pagina-topo"><div><h1>Registrar Devolução</h1><p>Confira os dados e confirme o recebimento do livro.</p></div></div>
+    <div th:replace="~{fragments/layout :: alertas}"></div>
+    <section class="painel"><dl class="detalhes"><div class="detalhe-item"><dt>Leitor</dt><dd th:text="${emprestimo.leitor.nome}"></dd></div><div class="detalhe-item"><dt>Livro</dt><dd th:text="${emprestimo.livro.titulo}"></dd></div><div class="detalhe-item"><dt>Data do empréstimo</dt><dd th:text="${#temporals.format(emprestimo.dataEmprestimo, 'dd/MM/yyyy')}"></dd></div><div class="detalhe-item"><dt>Devolução prevista</dt><dd th:text="${#temporals.format(emprestimo.dataDevolucaoPrevista, 'dd/MM/yyyy')}"></dd></div></dl>
+        <div class="mensagem-alerta" style="margin-top:25px" th:if="${diasAtraso > 0}" th:text="${'Atenção: devolução com ' + diasAtraso + ' dia(s) de atraso se realizada hoje.'}"></div>
+        <form method="post" th:action="@{/emprestimos/{id}/devolucao(id=${emprestimo.id})}"><div class="campo" style="margin-top:25px;max-width:390px"><label for="dataDevolucao">Data da devolução</label><input id="dataDevolucao" type="date" name="dataDevolucao" th:value="${dataDevolucao}" required></div><div class="form-acoes"><a class="btn btn-secondary" th:href="@{/emprestimos}">Cancelar</a><button class="btn btn-green" type="submit" th:disabled="${emprestimo.status.name() == 'DEVOLVIDO'}">Confirmar Devolução</button></div></form>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

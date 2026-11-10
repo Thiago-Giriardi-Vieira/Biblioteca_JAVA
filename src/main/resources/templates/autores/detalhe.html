@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Detalhe do autor | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('autores')}"></div>
+<main class="container">
+    <a class="voltar" th:href="@{/autores}">← Voltar aos autores</a>
+    <div class="pagina-topo"><div><h1 th:text="${autor.nome}"></h1><p>Dados e obras do autor.</p></div><a class="btn btn-primary" th:href="@{/autores/{id}/editar(id=${autor.id})}">Editar Autor</a></div>
+    <section class="painel">
+        <div class="detalhe-com-imagem">
+            <img class="avatar" th:if="${autor.imagem != null}" th:src="@{/autores/{id}/imagem(id=${autor.id})}" alt="Foto do autor">
+            <div><dl class="detalhes"><div class="detalhe-item"><dt>Nacionalidade</dt><dd th:text="${autor.nacionalidade}"></dd></div><div class="detalhe-item"><dt>Data de nascimento</dt><dd th:text="${autor.dataNascimento != null ? #temporals.format(autor.dataNascimento, 'dd/MM/yyyy') : 'Não informada'}"></dd></div><div class="detalhe-item largura-total"><dt>Biografia</dt><dd th:text="${autor.biografia != null && !autor.biografia.isBlank() ? autor.biografia : 'Não informada'}"></dd></div></dl></div>
+        </div>
+    </section>
+    <section class="painel" style="margin-top:22px"><h2>Livros vinculados</h2><div class="tabela-wrap"><table class="tabela"><thead><tr><th>Título</th><th>Ano</th><th>ISBN</th><th>Ações</th></tr></thead><tbody><tr th:each="livro : ${livros}"><td th:text="${livro.titulo}"></td><td th:text="${livro.anoPublicacao}"></td><td th:text="${livro.isbn}"></td><td><a class="btn-link" th:href="@{/livros/{id}(id=${livro.id})}">Visualizar</a></td></tr><tr th:if="${#lists.isEmpty(livros)}"><td colspan="4" class="vazio">Nenhuma obra vinculada a este autor.</td></tr></tbody></table></div></section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

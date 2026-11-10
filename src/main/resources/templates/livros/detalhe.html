@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Detalhe do livro | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('livros')}"></div>
+<main class="container">
+    <a class="voltar" th:href="@{/livros}">← Voltar aos livros</a>
+    <div class="pagina-topo"><div><h1 th:text="${livro.titulo}"></h1><p>Informações do livro selecionado.</p></div><a class="btn btn-primary" th:href="@{/livros/{id}/editar(id=${livro.id})}">Editar Livro</a></div>
+    <section class="painel"><div class="detalhe-com-imagem">
+        <img th:if="${livro.imagem != null}" class="capa" th:src="@{/livros/{id}/imagem(id=${livro.id})}" alt="Capa do livro">
+        <div><dl class="detalhes"><div class="detalhe-item"><dt>Autor</dt><dd><a class="btn-link" th:href="@{/autores/{id}(id=${livro.autor.id})}" th:text="${livro.autor.nome}"></a></dd></div><div class="detalhe-item"><dt>ISBN</dt><dd th:text="${livro.isbn}"></dd></div><div class="detalhe-item"><dt>Ano de publicação</dt><dd th:text="${livro.anoPublicacao}"></dd></div><div class="detalhe-item"><dt>Categoria</dt><dd th:text="${livro.categoria != null && !livro.categoria.isBlank() ? livro.categoria : 'Não informada'}"></dd></div><div class="detalhe-item"><dt>Data da compra</dt><dd th:text="${livro.dataCompra != null ? #temporals.format(livro.dataCompra, 'dd/MM/yyyy') : 'Não informada'}"></dd></div><div class="detalhe-item largura-total"><dt>Descrição</dt><dd th:text="${livro.descricao != null && !livro.descricao.isBlank() ? livro.descricao : 'Sem descrição'}"></dd></div></dl></div>
+    </div></section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

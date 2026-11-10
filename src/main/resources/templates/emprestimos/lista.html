@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Empréstimos | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('emprestimos')}"></div>
+<main class="container">
+    <div class="pagina-topo"><div><h1>Empréstimos e Pendências</h1><p>Acompanhe prazos, empréstimos ativos e devoluções.</p></div><a class="btn btn-green" th:href="@{/emprestimos/novo}">+ Novo Empréstimo</a></div>
+    <div th:replace="~{fragments/layout :: alertas}"></div>
+    <section class="painel">
+        <form class="filtros" method="get" th:action="@{/emprestimos}"><input class="campo-busca" type="search" name="busca" th:value="${busca}" placeholder="Pesquisar empréstimos por leitor ou livro..."><select name="status"><option value="">Todos os status</option><option value="ATIVO" th:selected="${statusSelecionado == 'ATIVO'}">Ativo</option><option value="ATRASADO" th:selected="${statusSelecionado == 'ATRASADO'}">Atrasado</option><option value="DEVOLVIDO" th:selected="${statusSelecionado == 'DEVOLVIDO'}">Devolvido</option></select><button class="btn btn-secondary" type="submit">Filtrar</button><a th:href="@{/emprestimos}" class="btn btn-outline">Limpar</a></form>
+        <div class="tabela-wrap"><table class="tabela"><thead><tr><th>Leitor</th><th>Livro</th><th>Data empréstimo</th><th>Devolução prevista</th><th>Status</th><th>Ações</th></tr></thead><tbody>
+            <tr th:each="emprestimo : ${emprestimos}"><td th:text="${emprestimo.leitor.nome}"></td><td><strong th:text="${emprestimo.livro.titulo}"></strong></td><td th:text="${#temporals.format(emprestimo.dataEmprestimo, 'dd/MM/yyyy')}"></td><td th:text="${#temporals.format(emprestimo.dataDevolucaoPrevista, 'dd/MM/yyyy')}"></td><td><span class="etiqueta" th:classappend="${#strings.toLowerCase(emprestimo.status.name())}" th:text="${emprestimo.status.descricao}"></span></td><td><div class="acoes"><a class="btn-link" th:href="@{/emprestimos/{id}(id=${emprestimo.id})}">Visualizar</a><a th:if="${emprestimo.status.name() != 'DEVOLVIDO'}" class="btn btn-sm btn-green" th:href="@{/emprestimos/{id}/devolucao(id=${emprestimo.id})}">Devolver</a></div></td></tr>
+            <tr th:if="${#lists.isEmpty(emprestimos)}"><td colspan="6" class="vazio">Nenhum empréstimo encontrado.</td></tr>
+        </tbody></table></div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

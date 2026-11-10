@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cadastro de autor | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('autores')}"></div>
+<main class="container">
+    <a class="voltar" th:href="@{/autores}">← Voltar aos autores</a>
+    <div class="pagina-topo"><div><h1 th:text="${id == null} ? 'Novo Autor' : 'Editar Autor'"></h1><p>Preencha os dados do autor.</p></div></div>
+    <section class="painel"><form th:action="@{/autores/salvar}" th:object="${form}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${id}">
+        <div class="alert erro" th:if="${#fields.hasGlobalErrors()}" th:each="falha : ${#fields.globalErrors()}" th:text="${falha}"></div>
+        <div class="form-grid">
+            <div class="campo"><label for="nome">Autor</label><input id="nome" type="text" th:field="*{nome}" placeholder="Nome do autor" maxlength="150" required><span class="erro-campo" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span></div>
+            <div class="campo"><label for="nascimento">Data de nascimento</label><input id="nascimento" type="date" th:field="*{dataNascimento}"></div>
+            <div class="campo"><label for="nacionalidade">Nacionalidade</label><input id="nacionalidade" type="text" th:field="*{nacionalidade}" placeholder="Ex.: Brasileira" maxlength="100" required><span class="erro-campo" th:if="${#fields.hasErrors('nacionalidade')}" th:errors="*{nacionalidade}"></span></div>
+            <div class="campo"><label for="imagem">Imagem do autor</label><input id="imagem" name="imagem" type="file" accept="image/png,image/jpeg,image/webp"><small>Opcional. PNG, JPG ou WEBP até 3 MB.</small></div>
+            <div class="campo largura-total"><label for="biografia">Biografia</label><textarea id="biografia" th:field="*{biografia}" placeholder="Biografia curta (opcional)" maxlength="2000"></textarea></div>
+        </div>
+        <div class="form-acoes"><a th:href="@{/autores}" class="btn btn-secondary">Cancelar</a><button class="btn btn-primary" type="submit">Salvar Autor</button></div>
+    </form></section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

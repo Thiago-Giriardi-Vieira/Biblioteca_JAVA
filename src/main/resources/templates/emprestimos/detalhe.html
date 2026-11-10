@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Detalhe do empréstimo | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('emprestimos')}"></div>
+<main class="container">
+    <a class="voltar" th:href="@{/emprestimos}">← Voltar aos empréstimos</a>
+    <div class="pagina-topo"><div><h1 th:text="${'Empréstimo #' + emprestimo.id}"></h1><p>Detalhes e acompanhamento da operação.</p></div><span class="etiqueta" th:classappend="${#strings.toLowerCase(emprestimo.status.name())}" th:text="${emprestimo.status.descricao}"></span></div>
+    <section class="painel"><dl class="detalhes"><div class="detalhe-item"><dt>Leitor</dt><dd th:text="${emprestimo.leitor.nome}"></dd></div><div class="detalhe-item"><dt>Livro</dt><dd th:text="${emprestimo.livro.titulo}"></dd></div><div class="detalhe-item"><dt>Data do empréstimo</dt><dd th:text="${#temporals.format(emprestimo.dataEmprestimo, 'dd/MM/yyyy')}"></dd></div><div class="detalhe-item"><dt>Devolução prevista</dt><dd th:text="${#temporals.format(emprestimo.dataDevolucaoPrevista, 'dd/MM/yyyy')}"></dd></div><div class="detalhe-item"><dt>Data de devolução real</dt><dd th:text="${emprestimo.dataDevolucaoReal == null ? '—' : #temporals.format(emprestimo.dataDevolucaoReal, 'dd/MM/yyyy')}"></dd></div></dl><div class="form-acoes"><a class="btn btn-secondary" th:href="@{/emprestimos}">Voltar</a><a th:if="${emprestimo.status.name() != 'DEVOLVIDO'}" class="btn btn-green" th:href="@{/emprestimos/{id}/devolucao(id=${emprestimo.id})}">Registrar Devolução</a></div></section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

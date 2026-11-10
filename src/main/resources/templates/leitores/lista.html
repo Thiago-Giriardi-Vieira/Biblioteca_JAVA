@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Leitores | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('leitores')}"></div>
+<main class="container">
+    <div class="pagina-topo"><div><h1>Leitores</h1><p>Consulte e mantenha os dados dos leitores.</p></div><a class="btn btn-primary" th:href="@{/leitores/novo}">+ Novo Leitor</a></div>
+    <div th:replace="~{fragments/layout :: alertas}"></div>
+    <section class="painel">
+        <form class="filtros" method="get" th:action="@{/leitores}"><input class="campo-busca" name="busca" type="search" th:value="${busca}" placeholder="Pesquisar leitores por nome, CPF ou e-mail..."><select name="ordem"><option value="asc" th:selected="${ordem == null || ordem == 'asc'}">Nome A–Z</option><option value="desc" th:selected="${ordem == 'desc'}">Nome Z–A</option></select><button class="btn btn-secondary" type="submit">Filtrar</button><a th:href="@{/leitores}" class="btn btn-outline">Limpar</a></form>
+        <div class="tabela-wrap"><table class="tabela"><thead><tr><th>Nome</th><th>CPF</th><th>E-mail</th><th>Telefone</th><th>Ações</th></tr></thead><tbody>
+            <tr th:each="leitor : ${leitores}"><td><strong th:text="${leitor.nome}"></strong></td><td th:text="${leitor.cpf}"></td><td th:text="${leitor.email}"></td><td th:text="${leitor.telefone}"></td><td><div class="acoes"><a class="btn btn-sm btn-outline" th:href="@{/leitores/{id}/editar(id=${leitor.id})}">Editar</a><form method="post" th:action="@{/leitores/{id}/excluir(id=${leitor.id})}" onsubmit="return confirm('Deseja excluir este leitor? Esta operação não poderá ser desfeita.')"><button class="btn btn-sm btn-danger" type="submit">Excluir</button></form></div></td></tr>
+            <tr th:if="${#lists.isEmpty(leitores)}"><td colspan="5" class="vazio">Nenhum leitor encontrado.</td></tr>
+        </tbody></table></div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

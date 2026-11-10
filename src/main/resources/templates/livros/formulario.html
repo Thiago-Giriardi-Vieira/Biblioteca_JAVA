@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cadastro de livro | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('livros')}"></div>
+<main class="container">
+    <a class="voltar" th:href="@{/livros}">← Voltar aos livros</a>
+    <div class="pagina-topo"><div><h1 th:text="${id == null} ? 'Novo Livro' : 'Editar Livro'"></h1><p>Preencha os dados para compor o acervo.</p></div></div>
+    <section class="painel"><form th:action="@{/livros/salvar}" th:object="${form}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${id}"><div class="alert erro" th:if="${#fields.hasGlobalErrors()}" th:each="falha : ${#fields.globalErrors()}" th:text="${falha}"></div>
+        <div class="form-grid">
+            <div class="campo"><label for="titulo">Título</label><input id="titulo" type="text" th:field="*{titulo}" placeholder="Título do livro" maxlength="200" required><span class="erro-campo" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></span></div>
+            <div class="campo"><label for="anoPublicacao">Ano de publicação</label><input id="anoPublicacao" type="number" th:field="*{anoPublicacao}" placeholder="Ex.: 1899" min="1000" max="2200" required><span class="erro-campo" th:if="${#fields.hasErrors('anoPublicacao')}" th:errors="*{anoPublicacao}"></span></div>
+            <div class="campo"><label for="isbn">ISBN</label><input id="isbn" type="text" th:field="*{isbn}" placeholder="ISBN-10 ou ISBN-13" maxlength="20" required><span class="erro-campo" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></span></div>
+            <div class="campo"><label for="categoria">Categoria</label><select id="categoria" th:field="*{categoria}"><option value="">Selecione uma categoria</option><option th:each="categoria : ${categorias}" th:value="${categoria}" th:text="${categoria}"></option></select></div>
+            <div class="campo"><label for="autor">Autor</label><select id="autor" th:field="*{autorId}" required><option value="">Vincular autor</option><option th:each="autor : ${autores}" th:value="${autor.id}" th:text="${autor.nome}"></option></select><span class="erro-campo" th:if="${#fields.hasErrors('autorId')}" th:errors="*{autorId}"></span><small th:if="${#lists.isEmpty(autores)}">Cadastre um autor antes de cadastrar o livro.</small></div>
+            <div class="campo"><label for="dataCompra">Data da compra</label><input id="dataCompra" type="date" th:field="*{dataCompra}"></div>
+            <div class="campo"><label for="imagem">Imagem da capa</label><input id="imagem" type="file" name="imagem" accept="image/png,image/jpeg,image/webp"><small>Opcional. JPG, PNG ou WEBP até 3 MB.</small></div>
+            <div class="campo"><label for="descricao">Descrição</label><textarea id="descricao" th:field="*{descricao}" placeholder="Descrição do livro" maxlength="3000"></textarea></div>
+        </div>
+        <div class="form-acoes"><a th:href="@{/livros}" class="btn btn-secondary">Cancelar</a><button class="btn btn-primary" type="submit">Salvar Livro</button></div>
+    </form></section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

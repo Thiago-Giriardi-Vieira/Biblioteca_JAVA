@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Livros | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('livros')}"></div>
+<main class="container">
+    <div class="pagina-topo"><div><h1>Acervo de Livros</h1><p>Consulte e organize os livros disponíveis na biblioteca.</p></div><a class="btn btn-primary" th:href="@{/livros/novo}">+ Novo Livro</a></div>
+    <div th:replace="~{fragments/layout :: alertas}"></div>
+    <section class="painel">
+        <form class="filtros" method="get" th:action="@{/livros}"><input class="campo-busca" type="search" name="busca" th:value="${busca}" placeholder="Pesquisar livros, autores ou ISBN..."><select name="categoria"><option value="">Todas as categorias</option><option th:each="categoria : ${categorias}" th:value="${categoria}" th:text="${categoria}" th:selected="${categoria == categoriaSelecionada}"></option></select><button class="btn btn-secondary" type="submit">Filtrar</button><a class="btn btn-outline" th:href="@{/livros}">Limpar</a></form>
+        <div class="tabela-wrap"><table class="tabela"><thead><tr><th>ID</th><th>Livro</th><th>Autor</th><th>Categoria</th><th>Ações</th></tr></thead><tbody>
+            <tr th:each="livro : ${livros}"><td th:text="${livro.id}"></td><td><strong th:text="${livro.titulo}"></strong><span style="color:#7b8798" th:text="${' (' + livro.anoPublicacao + ')'}"></span></td><td th:text="${livro.autor.nome}"></td><td th:text="${livro.categoria != null && !livro.categoria.isBlank() ? livro.categoria : '—'}"></td><td><div class="acoes"><a class="btn-link" th:href="@{/livros/{id}(id=${livro.id})}">Visualizar</a><a class="btn btn-sm btn-outline" th:href="@{/livros/{id}/editar(id=${livro.id})}">Editar</a><form method="post" th:action="@{/livros/{id}/excluir(id=${livro.id})}" onsubmit="return confirm('Deseja excluir este livro?')"><button class="btn btn-sm btn-danger" type="submit">Excluir</button></form></div></td></tr>
+            <tr th:if="${#lists.isEmpty(livros)}"><td colspan="5" class="vazio">Nenhum livro encontrado.</td></tr>
+        </tbody></table></div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

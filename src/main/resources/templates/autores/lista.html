@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Autores | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('autores')}"></div>
+<main class="container">
+    <div class="pagina-topo"><div><h1>Autores</h1><p>Cadastre, encontre e gerencie os autores do acervo.</p></div><a class="btn btn-primary" th:href="@{/autores/novo}">+ Novo Autor</a></div>
+    <div th:replace="~{fragments/layout :: alertas}"></div>
+    <section class="painel">
+        <form class="filtros" method="get" th:action="@{/autores}">
+            <input class="campo-busca" type="search" name="busca" th:value="${busca}" placeholder="Pesquisar autor..."><button class="btn btn-secondary" type="submit">Filtrar</button><a class="btn btn-outline" th:href="@{/autores}">Limpar</a>
+        </form>
+        <div class="tabela-wrap"><table class="tabela"><thead><tr><th>ID</th><th>Autor</th><th>Nacionalidade</th><th>Ações</th></tr></thead><tbody>
+            <tr th:each="autor : ${autores}"><td th:text="${autor.id}"></td><td><strong th:text="${autor.nome}"></strong></td><td th:text="${autor.nacionalidade}"></td><td><div class="acoes"><a class="btn-link" th:href="@{/autores/{id}(id=${autor.id})}">Visualizar</a><a class="btn btn-sm btn-outline" th:href="@{/autores/{id}/editar(id=${autor.id})}">Editar</a><form method="post" th:action="@{/autores/{id}/excluir(id=${autor.id})}" onsubmit="return confirm('Deseja excluir este autor?')"><button class="btn btn-sm btn-danger" type="submit">Excluir</button></form></div></td></tr>
+            <tr th:if="${#lists.isEmpty(autores)}"><td colspan="4" class="vazio">Nenhum autor encontrado.</td></tr>
+        </tbody></table></div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

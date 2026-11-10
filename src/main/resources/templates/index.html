@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Início | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('inicio')}"></div>
+<main class="container">
+    <section class="hero">
+        <span class="sobrelinha">PAINEL DE CONTROLE</span>
+        <h1>Gestão da Biblioteca</h1>
+        <p>Organize seu acervo, acompanhe leitores e gerencie empréstimos em um só lugar.</p>
+    </section>
+    <section class="estatisticas" aria-label="Resumo da biblioteca">
+        <div class="estatistica"><span>Livros cadastrados</span><strong th:text="${totalLivros}">0</strong></div>
+        <div class="estatistica"><span>Autores</span><strong th:text="${totalAutores}">0</strong></div>
+        <div class="estatistica"><span>Leitores</span><strong th:text="${totalLeitores}">0</strong></div>
+        <div class="estatistica"><span>Empréstimos ativos</span><strong th:text="${emprestimosAtivos}">0</strong></div>
+        <div class="estatistica alerta-estatistica"><span>Em atraso</span><strong th:text="${emprestimosAtrasados}">0</strong></div>
+    </section>
+    <section class="painel-principal">
+        <div class="secao-titulo"><h2>Acessar módulos</h2><p>Selecione uma área do sistema.</p></div>
+        <div class="modulos">
+            <a class="modulo" th:href="@{/livros}"><span class="modulo-icone">▤</span><strong>Livros</strong><small>Acervo e categorias</small></a>
+            <a class="modulo" th:href="@{/autores}"><span class="modulo-icone">♧</span><strong>Autores</strong><small>Cadastros e obras</small></a>
+            <a class="modulo" th:href="@{/leitores}"><span class="modulo-icone">♙</span><strong>Leitores</strong><small>Cadastro de usuários</small></a>
+            <a class="modulo" th:href="@{/emprestimos}"><span class="modulo-icone">⇄</span><strong>Empréstimos</strong><small>Devoluções e pendências</small></a>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

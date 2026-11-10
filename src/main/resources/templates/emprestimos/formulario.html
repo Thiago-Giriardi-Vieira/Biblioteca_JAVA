@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Novo empréstimo | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('emprestimos')}"></div>
+<main class="container">
+    <a class="voltar" th:href="@{/emprestimos}">← Voltar aos empréstimos</a>
+    <div class="pagina-topo"><div><h1>Novo Empréstimo</h1><p>Selecione um leitor e um livro disponível.</p></div></div>
+    <section class="painel"><form th:action="@{/emprestimos/salvar}" th:object="${form}" method="post">
+        <div class="alert erro" th:if="${#fields.hasGlobalErrors()}" th:each="falha : ${#fields.globalErrors()}" th:text="${falha}"></div>
+        <div class="form-grid">
+            <div class="campo largura-total"><label for="leitor">Leitor</label><select id="leitor" th:field="*{leitorId}" required><option value="">Selecione o leitor</option><option th:each="leitor : ${leitores}" th:value="${leitor.id}" th:text="${leitor.nome + ' · ' + leitor.cpf}"></option></select><span class="erro-campo" th:if="${#fields.hasErrors('leitorId')}" th:errors="*{leitorId}"></span><small th:if="${#lists.isEmpty(leitores)}">Cadastre um leitor para iniciar um empréstimo.</small></div>
+            <div class="campo largura-total"><label for="livro">Livro disponível</label><select id="livro" th:field="*{livroId}" required><option value="">Selecione o livro disponível</option><option th:each="livro : ${livros}" th:value="${livro.id}" th:text="${livro.titulo + ' · ' + livro.autor.nome}"></option></select><span class="erro-campo" th:if="${#fields.hasErrors('livroId')}" th:errors="*{livroId}"></span><small th:if="${#lists.isEmpty(livros)}">Não existem livros disponíveis. Cadastre um livro ou registre uma devolução.</small></div>
+            <div class="campo"><label for="dataEmprestimo">Data do empréstimo</label><input id="dataEmprestimo" type="date" th:field="*{dataEmprestimo}" required><span class="erro-campo" th:if="${#fields.hasErrors('dataEmprestimo')}" th:errors="*{dataEmprestimo}"></span></div>
+            <div class="campo"><label for="dataDevolucaoPrevista">Devolução prevista</label><input id="dataDevolucaoPrevista" type="date" th:field="*{dataDevolucaoPrevista}" required><span class="erro-campo" th:if="${#fields.hasErrors('dataDevolucaoPrevista')}" th:errors="*{dataDevolucaoPrevista}"></span></div>
+        </div>
+        <div class="form-acoes"><a class="btn btn-secondary" th:href="@{/emprestimos}">Cancelar</a><button type="submit" class="btn btn-green">Registrar Empréstimo</button></div>
+    </form></section>
+</main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>

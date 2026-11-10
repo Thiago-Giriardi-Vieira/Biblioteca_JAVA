@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Registro não encontrado | Biblioteca.web</title><link rel="stylesheet" th:href="@{/css/estilo.css}"></head>
+<body>
+<div th:replace="~{fragments/layout :: cabecalho('inicio')}"></div>
+<main class="container"><section class="painel" style="text-align:center;padding:70px 24px"><h1>Registro não encontrado</h1><p th:text="${mensagem}"></p><a class="btn btn-primary" th:href="@{/}">Voltar ao início</a></section></main>
+<div th:replace="~{fragments/layout :: rodape}"></div>
+</body>
+</html>
